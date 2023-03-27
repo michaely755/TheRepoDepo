@@ -1,6 +1,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 int extraMemoryAllocated;
 
@@ -77,7 +78,7 @@ void insertionSort(int* pData, int n)
     }
     pData[j+1] = key;
   }
-	
+
 }
 
 // implement bubble sort
@@ -122,18 +123,20 @@ void selectionSort(int* pData, int n)
 // parses input file to an integer array
 int parseData(char *inputFileName, int **ppData)
 {
-	FILE* inFile = fopen(inputFileName,"r");
-	int dataSz = 0;
-	*ppData = NULL;
-	
-	if (inFile)
-	{
-		fscanf(inFile,"%d\n",&dataSz);
-		*ppData = (int *)malloc(sizeof(int) * dataSz);
-		// Implement parse data block
-	}
-	
-	return dataSz;
+    FILE *inFile = fopen(inputFileName,"r");
+    int dataSz = 0;
+    *ppData = NULL;
+
+    if (inFile)
+    {
+        fscanf(inFile,"%d\n",&dataSz);
+        *ppData = (int *)malloc(sizeof(int) * dataSz);
+
+    }
+
+    fclose(inFile);
+
+    return dataSz;
 }
 
 // prints first and last 100 items in the data array
@@ -146,7 +149,7 @@ void printArray(int pData[], int dataSz)
 		printf("%d ",pData[i]);
 	}
 	printf("\n\t");
-	
+
 	for (i=sz;i<dataSz;++i)
 	{
 		printf("%d ",pData[i]);
@@ -160,21 +163,21 @@ int main(void)
 	int i;
     double cpu_time_used;
 	char* fileNames[] = {"input1.txt", "input2.txt", "input3.txt"};
-	
+
 	for (i=0;i<3;++i)
 	{
 		int *pDataSrc, *pDataCopy;
 		int dataSz = parseData(fileNames[i], &pDataSrc);
-		
+
 		if (dataSz <= 0)
 			continue;
-		
+
 		pDataCopy = (int *)malloc(sizeof(int)*dataSz);
-	
+
 		printf("---------------------------\n");
 		printf("Dataset Size : %d\n",dataSz);
 		printf("---------------------------\n");
-		
+
 		printf("Selection Sort:\n");
 		memcpy(pDataCopy, pDataSrc, dataSz*sizeof(int));
 		extraMemoryAllocated = 0;
@@ -185,7 +188,7 @@ int main(void)
 		printf("\truntime\t\t\t: %.1lf\n",cpu_time_used);
 		printf("\textra memory allocated\t: %d\n",extraMemoryAllocated);
 		printArray(pDataCopy, dataSz);
-		
+
 		printf("Insertion Sort:\n");
 		memcpy(pDataCopy, pDataSrc, dataSz*sizeof(int));
 		extraMemoryAllocated = 0;
@@ -207,7 +210,7 @@ int main(void)
 		printf("\truntime\t\t\t: %.1lf\n",cpu_time_used);
 		printf("\textra memory allocated\t: %d\n",extraMemoryAllocated);
 		printArray(pDataCopy, dataSz);
-		
+
 		printf("Merge Sort:\n");
 		memcpy(pDataCopy, pDataSrc, dataSz*sizeof(int));
 		extraMemoryAllocated = 0;
@@ -218,9 +221,9 @@ int main(void)
 		printf("\truntime\t\t\t: %.1lf\n",cpu_time_used);
 		printf("\textra memory allocated\t: %d\n",extraMemoryAllocated);
 		printArray(pDataCopy, dataSz);
-		
+
 		free(pDataCopy);
 		free(pDataSrc);
 	}
-	
+    return 0;
 }
